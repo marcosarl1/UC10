@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.cenaflix"},{"l":"com.cenaflix.dao"},{"l":"com.cenaflix.model"},{"l":"com.cenaflix.util"},{"l":"com.cenaflix.view"}];updateSearchResults();

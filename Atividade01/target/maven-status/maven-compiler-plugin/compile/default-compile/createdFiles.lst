@@ -1,0 +1,7 @@
+com\cenaflix\model\Filme.class
+com\cenaflix\Cenaflix.class
+com\cenaflix\view\CadastrarFilme$2.class
+com\cenaflix\dao\FilmeDAO.class
+com\cenaflix\util\DB.class
+com\cenaflix\view\CadastrarFilme.class
+com\cenaflix\view\CadastrarFilme$1.class

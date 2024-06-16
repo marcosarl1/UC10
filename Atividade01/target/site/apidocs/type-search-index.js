@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.cenaflix.view","l":"CadastrarFilme"},{"p":"com.cenaflix","l":"Cenaflix"},{"p":"com.cenaflix.util","l":"DB"},{"p":"com.cenaflix.model","l":"Filme"},{"p":"com.cenaflix.dao","l":"FilmeDAO"}];updateSearchResults();
