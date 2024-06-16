@@ -6,10 +6,10 @@ Sua interface de cadastro deve estar de acordo com o wireframe que se encontra n
 Desenvolva uma aplicação com três telas:
 
    * A primeira tela será um login contendo usuário e senha. Ao se conectar, o usuário receberá uma mensagem em um JOptionPane semelhante a essa:
-    
 
-“Olá USUÁRIO, sua permissão é de TIPO_DE_USUÁRIO. Seja bem-vindo!”
-Você terá que criar pelo menos três tipos de usuários diferentes, por exemplo: Administrador, Operador e Usuário. Cada usuário terá permissões diferentes, tais como:
+     “Olá USUÁRIO, sua permissão é de TIPO_DE_USUÁRIO. Seja bem-vindo!”.
+     
+     Você terá que criar pelo menos três tipos de usuários diferentes, por exemplo: Administrador, Operador e Usuário. Cada usuário terá permissões diferentes, tais como:
 
    * Administrador: cadastrar, excluir e listar
    * Operador: cadastrar e listar
