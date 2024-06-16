@@ -11,7 +11,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class ListagemFilme extends javax.swing.JFrame {
 
+    private final FilmeDAO filmeDAO;
+
     public ListagemFilme() {
+        this.filmeDAO = new FilmeDAO();
         initComponents();
         init();
         loadMovies();
@@ -47,7 +50,15 @@ public class ListagemFilme extends javax.swing.JFrame {
             new String [] {
                 "id", "Nome", "Data Lançamento", "Categoria"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblMovies.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblMovies);
         if (tblMovies.getColumnModel().getColumnCount() > 0) {
@@ -55,12 +66,28 @@ public class ListagemFilme extends javax.swing.JFrame {
             tblMovies.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
+        txtSearch.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtSearchCaretUpdate(evt);
+            }
+        });
+
         lblTitle.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
         lblTitle.setText("Cenaflix");
 
         btnDelete.setText("Deletar");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Editar");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnRegister.setText("Cadastrar");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
@@ -130,9 +157,70 @@ public class ListagemFilme extends javax.swing.JFrame {
         new CadastrarFilme(this).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            if (tblMovies.getSelectedRowCount() > 1) {
+                JOptionPane.showMessageDialog(null, "Selecione apenas um filme.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            } else if (tblMovies.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Selecione um filme.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Integer id = (Integer) tblMovies.getValueAt(tblMovies.getSelectedRow(), 0);
+            Filme selectedFilme = filmeDAO.selectMovie(id);
+            CadastrarFilme cadastrarFilme = new CadastrarFilme(this);
+            cadastrarFilme.fillEdit(selectedFilme);
+            cadastrarFilme.setVisible(true);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar filme, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (tblMovies.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione pelo menos um filme.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int[] selectedRows = tblMovies.getSelectedRows();
+
+        String[] options = {"Sim", "Não"};
+        int confirm = JOptionPane.showOptionDialog(null, "Tem certeza que deseja deletar o(s) filme(s)?", "Confirmar",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (confirm == 0) {
+            try {
+                for (int selectedRow : selectedRows) {
+                    int id = (int) tblMovies.getValueAt(selectedRow, 0);
+                    filmeDAO.deleteMovie(id);
+                }
+                loadMovies();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao deletar filme(s), tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void txtSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtSearchCaretUpdate
+        String query = txtSearch.getText().trim();
+        try {
+            List<Filme> filmes = filmeDAO.searchMovie(query);
+            updateTbl(filmes);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao pesquisar filmes, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_txtSearchCaretUpdate
+
     /**
      * Atualiza a tabela de filmes com uma baseado na lista filmes.
-     * 
+     *
      * @param filmes A lista de filmes a ser exibida na tabela
      */
     private void updateTbl(List<Filme> filmes) {
@@ -147,16 +235,16 @@ public class ListagemFilme extends javax.swing.JFrame {
      * Carrega todos os filmes do banco de dados e atualiza a tabela de filmes.
      */
     protected final void loadMovies() {
-        FilmeDAO filmeDAO = new FilmeDAO();
         try {
             List<Filme> filmes = filmeDAO.selectAllMovies();
             updateTbl(filmes);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao carregar filmes", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro ao carregar filmes, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;

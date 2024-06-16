@@ -22,11 +22,19 @@ public class FilmeDAO {
             = "INSERT INTO filmes (nome, datalancamento, categoria) VALUES (?, ?, ?)";
     private static final String SELECT_ALL_MOVIES
             = "SELECT * FROM filmes";
+    private static final String SELECT_MOVIE_BY_ID
+            = "SELECT * FROM filmes WHERE id=?";
+    private static final String EDIT_MOVIE
+            = "UPDATE filmes SET nome=?, datalancamento=?, categoria=? WHERE id=?";
+    private static final String DELETE_MOVIE
+            = "DELETE FROM filmes WHERE id=?";
+    private static final String SEARCH_MOVIE
+            = "SELECT * FROM filmes WHERE nome LIKE ? OR categoria LIKE ?";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     /**
      * Insere um filme no banco de dados.
-     * 
+     *
      * @param filme O filme a ser inserido
      * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
      */
@@ -48,21 +56,18 @@ public class FilmeDAO {
 
     /**
      * Seleciona todos os filmes do banco de dados
+     *
      * @return Uma lista de objetos Filme contendo todos os filmes
      * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
      */
-    public List<Filme> selectAllMovies() throws SQLException{
+    public List<Filme> selectAllMovies() throws SQLException {
         List<Filme> filmes = new ArrayList<>();
         try {
             conn = DB.getConnection();
             st = conn.prepareStatement(SELECT_ALL_MOVIES);
             rs = st.executeQuery();
-            while (rs.next()) {                
-                Filme filme = new Filme();
-                filme.setId(rs.getInt("id"));
-                filme.setNome(rs.getString("nome"));
-                filme.setDatalancamento(rs.getDate("datalancamento").toLocalDate());
-                filme.setCategoria(rs.getString("categoria"));
+            while (rs.next()) {
+                Filme filme = createMovie(rs);
                 filmes.add(filme);
             }
         } catch (SQLException e) {
@@ -73,5 +78,81 @@ public class FilmeDAO {
             DB.closeRs(rs);
         }
         return filmes;
+    }
+
+    public Filme selectMovie(int id) throws SQLException {
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(SELECT_MOVIE_BY_ID);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            rs.next();
+            Filme filme = createMovie(rs);
+            return filme;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            DB.closeConnection();
+            DB.closeSt(st);
+            DB.closeRs(rs);
+        }
+    }
+
+    public void editMovie(Filme filme) throws SQLException {
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(EDIT_MOVIE);
+            st.setString(1, filme.getNome());
+            st.setString(2, filme.getDatalancamento().format(FORMATTER));
+            st.setString(3, filme.getCategoria());
+            st.setInt(4, filme.getId());
+            st.execute();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            DB.closeConnection();
+            DB.closeSt(st);
+        }
+    }
+
+    public void deleteMovie(int id) throws SQLException {
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(DELETE_MOVIE);
+            st.setInt(1, id);
+            st.execute();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            DB.closeConnection();
+            DB.closeSt(st);
+        }
+    }
+
+    public List<Filme> searchMovie(String query) throws SQLException {
+        List<Filme> filmes = new ArrayList<>();
+        String searchQuery = "%" + query + "%";
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(SEARCH_MOVIE);
+            st.setString(1, searchQuery);
+            st.setString(2, searchQuery);
+            rs = st.executeQuery();
+            while (rs.next()) {                
+                Filme filme = createMovie(rs);
+                filmes.add(filme);
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            DB.closeConnection();
+            DB.closeSt(st);
+            DB.closeRs(rs);
+        }
+        return filmes;
+    }
+
+    private Filme createMovie(ResultSet rs) throws SQLException {
+        return new Filme(rs.getInt("id"), rs.getString("nome"), rs.getDate("datalancamento").toLocalDate(),rs.getString("categoria"));
     }
 }

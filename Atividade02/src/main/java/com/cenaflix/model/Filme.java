@@ -12,6 +12,16 @@ public class Filme {
     private LocalDate datalancamento;
     private String categoria;
 
+    public Filme() {
+    }
+
+    public Filme(int id, String nome, LocalDate datalancamento, String categoria) {
+        this.id = id;
+        this.nome = nome;
+        this.datalancamento = datalancamento;
+        this.categoria = categoria;
+    }
+
     public int getId() {
         return id;
     }

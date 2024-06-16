@@ -8,16 +8,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  * Classe responsável pela interface gráfica de cadastro de filmes.
  */
 public class CadastrarFilme extends javax.swing.JDialog {
+
     private final ListagemFilme listagemFilme;
+    private final FilmeDAO filmeDAO;
+    private Filme filmeEdit = null;
 
     public CadastrarFilme(ListagemFilme listagemFilme) {
         super(listagemFilme, "Cadastrar filme", true);
         this.listagemFilme = listagemFilme;
+        this.filmeDAO = new FilmeDAO();
         initComponents();
         init();
     }
@@ -46,13 +51,14 @@ public class CadastrarFilme extends javax.swing.JDialog {
         txtName = new javax.swing.JTextField();
         btnClean = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblCenaflix = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cenaflix");
         setResizable(false);
 
         lblTitle.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("CADASTRO DE FILME");
 
         lblName.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -87,8 +93,9 @@ public class CadastrarFilme extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jLabel1.setText("CENAFLIX");
+        lblCenaflix.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
+        lblCenaflix.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCenaflix.setText("CENAFLIX");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,7 +106,9 @@ public class CadastrarFilme extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTitle)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblName)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,14 +128,14 @@ public class CadastrarFilme extends javax.swing.JDialog {
                                             .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addGap(155, 155, 155))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(lblCenaflix)
                         .addGap(190, 190, 190))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jLabel1)
+                .addComponent(lblCenaflix)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
@@ -207,34 +216,51 @@ public class CadastrarFilme extends javax.swing.JDialog {
 
         // Cria um objeto Filme com os dados informados.
         Filme filme = new Filme();
+        if (filmeEdit != null) {
+            filme = filmeEdit;
+        }
         filme.setNome(nome);
         filme.setDatalancamento(datalancamento);
         filme.setCategoria(categoria);
 
         try {
-            // Realiza tentativa de inserir o filme no banco de dados.
-            FilmeDAO.insertMovie(filme);
-            JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + " \" adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            if (filmeEdit == null) {
+                // Realiza tentativa de inserir o filme no banco de dados.
+                FilmeDAO.insertMovie(filme);
+                JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + "\" adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                btnCleanActionPerformed(evt);
+            } else {
+                filmeDAO.editMovie(filme);
+                JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + "\" atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            }
             listagemFilme.loadMovies();
-            txtName.setText("");
-            txtDate.setText("");
-            txtCategory.setText("");
         } catch (SQLException e) {
             System.out.println("Erro ao adiconar" + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar filme, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocorreu uma falha, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             System.out.println("Erro inesperado: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    public void fillEdit(Filme filme) {
+        lblTitle.setText("Editar filme");
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        btnRegister.setText("Editar");
+        txtName.setText(filme.getNome());
+        txtDate.setText(filme.getDatalancamento().format(DateTimeFormatter.ofPattern("dd/MM/y")));
+        txtCategory.setText(filme.getCategoria());
+
+        filmeEdit = filme;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClean;
     private javax.swing.JButton btnRegister;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCategory;
+    private javax.swing.JLabel lblCenaflix;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblTitle;
