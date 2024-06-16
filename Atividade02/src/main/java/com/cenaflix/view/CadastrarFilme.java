@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 /**
- * Classe responsável pela interface gráfica de cadastro de filmes.
+ * Classe responsável pela interface gráfica de cadastro e edição de filmes.
  */
 public class CadastrarFilme extends javax.swing.JDialog {
 
@@ -62,23 +62,30 @@ public class CadastrarFilme extends javax.swing.JDialog {
         lblTitle.setText("CADASTRO DE FILME");
 
         lblName.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lblName.setLabelFor(txtName);
         lblName.setText("Nome do filme:");
 
         lblDate.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lblDate.setLabelFor(lblDate);
         lblDate.setText("Data de lançamento:");
 
         lblCategory.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lblCategory.setLabelFor(txtCategory);
         lblCategory.setText("Categoria:");
 
         txtCategory.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtCategory.setToolTipText("Digite a categoria do filme.");
 
         txtDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/y"))));
+        txtDate.setToolTipText("Digite a data de lançamento do filme.");
         txtDate.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
 
         txtName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtName.setToolTipText("Digite o nome do filme.");
 
         btnClean.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         btnClean.setText("Limpar");
+        btnClean.setToolTipText("Limpar campos de texto.");
         btnClean.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCleanActionPerformed(evt);
@@ -87,6 +94,7 @@ public class CadastrarFilme extends javax.swing.JDialog {
 
         btnRegister.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         btnRegister.setText("Cadastrar");
+        btnRegister.setToolTipText("Cadastrar novo filme.");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegisterActionPerformed(evt);
@@ -190,7 +198,7 @@ public class CadastrarFilme extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCleanActionPerformed
 
     /**
-     * Executa o cadastro de um filme quando o botão "Cadastrar" é clicado.
+     * Executa o cadastro ou edição de um filme quando o botão é clicado.
      *
      * @param evt O evento de clique do botão.
      */
@@ -215,17 +223,13 @@ public class CadastrarFilme extends javax.swing.JDialog {
         }
 
         // Cria um objeto Filme com os dados informados.
-        Filme filme = new Filme();
-        if (filmeEdit != null) {
-            filme = filmeEdit;
-        }
+        Filme filme = filmeEdit != null ? filmeEdit : new Filme();
         filme.setNome(nome);
         filme.setDatalancamento(datalancamento);
         filme.setCategoria(categoria);
 
         try {
             if (filmeEdit == null) {
-                // Realiza tentativa de inserir o filme no banco de dados.
                 FilmeDAO.insertMovie(filme);
                 JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + "\" adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 btnCleanActionPerformed(evt);
@@ -244,10 +248,15 @@ public class CadastrarFilme extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    /**
+     * Preenche os campos da interface com os dados de um filme para edição.
+     * 
+     * @param filme O objeto Filme a ser editado.
+     */
     public void fillEdit(Filme filme) {
         lblTitle.setText("Editar filme");
-        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         btnRegister.setText("Editar");
+        btnRegister.setToolTipText("Atualizar dados do filme.");
         txtName.setText(filme.getNome());
         txtDate.setText(filme.getDatalancamento().format(DateTimeFormatter.ofPattern("dd/MM/y")));
         txtCategory.setText(filme.getCategoria());

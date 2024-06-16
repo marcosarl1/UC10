@@ -80,6 +80,13 @@ public class FilmeDAO {
         return filmes;
     }
 
+    /**
+     * Seleciona um filme pelo seu ID.
+     * 
+     * @param id O ID do filme a ser selecionado.
+     * @return O objeto Filme correspondente ao ID fornecido.
+     * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
+     */
     public Filme selectMovie(int id) throws SQLException {
         try {
             conn = DB.getConnection();
@@ -98,6 +105,12 @@ public class FilmeDAO {
         }
     }
 
+    /**
+     * Edita as informações de um filme existente.
+     * 
+     * @param filme O objeto Filme contendo as informações atualizadas.
+     * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
+     */
     public void editMovie(Filme filme) throws SQLException {
         try {
             conn = DB.getConnection();
@@ -115,6 +128,12 @@ public class FilmeDAO {
         }
     }
 
+    /**
+     * Deleta um filme pelo seu ID.
+     * 
+     * @param id O ID do filme a ser deletado.
+     * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
+     */
     public void deleteMovie(int id) throws SQLException {
         try {
             conn = DB.getConnection();
@@ -129,6 +148,13 @@ public class FilmeDAO {
         }
     }
 
+    /**
+     * Pesquisa filmes pelo nome ou categoria.
+     * 
+     * @param query A string de consulta a ser pesquisada.
+     * @return Uma lista de objetos Filme que correspondem à consulta.
+     * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
+     */
     public List<Filme> searchMovie(String query) throws SQLException {
         List<Filme> filmes = new ArrayList<>();
         String searchQuery = "%" + query + "%";
@@ -152,6 +178,13 @@ public class FilmeDAO {
         return filmes;
     }
 
+    /**
+     * Cria um objeto Filme a partir de um ResultSet.
+     * 
+     * @param rs O ResultSet contendo os dados do filme.
+     * @return Um objeto filme.
+     * @throws SQLException Se ocorrer um erro ao acessar o banco de dados.
+     */
     private Filme createMovie(ResultSet rs) throws SQLException {
         return new Filme(rs.getInt("id"), rs.getString("nome"), rs.getDate("datalancamento").toLocalDate(),rs.getString("categoria"));
     }

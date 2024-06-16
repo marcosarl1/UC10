@@ -134,6 +134,9 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JTextField" name="txtSearch">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Pesquisar filme por nome ou categoria."/>
+          </Properties>
           <Events>
             <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="txtSearchCaretUpdate"/>
           </Events>
@@ -149,6 +152,7 @@
         <Component class="javax.swing.JButton" name="btnDelete">
           <Properties>
             <Property name="text" type="java.lang.String" value="Deletar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Deletar filme."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
@@ -157,6 +161,7 @@
         <Component class="javax.swing.JButton" name="btnEdit">
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Editar filme."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditActionPerformed"/>
@@ -165,6 +170,7 @@
         <Component class="javax.swing.JButton" name="btnRegister">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cadastrar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Cadastrar novo filme."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterActionPerformed"/>

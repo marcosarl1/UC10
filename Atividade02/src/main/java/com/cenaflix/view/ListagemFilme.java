@@ -9,6 +9,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Classe responsável pela interface gráfica de listagem de filmes.
+ */
 public class ListagemFilme extends javax.swing.JFrame {
 
     private final FilmeDAO filmeDAO;
@@ -66,6 +69,7 @@ public class ListagemFilme extends javax.swing.JFrame {
             tblMovies.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
+        txtSearch.setToolTipText("Pesquisar filme por nome ou categoria.");
         txtSearch.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 txtSearchCaretUpdate(evt);
@@ -76,6 +80,7 @@ public class ListagemFilme extends javax.swing.JFrame {
         lblTitle.setText("Cenaflix");
 
         btnDelete.setText("Deletar");
+        btnDelete.setToolTipText("Deletar filme.");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -83,6 +88,7 @@ public class ListagemFilme extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Editar");
+        btnEdit.setToolTipText("Editar filme.");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
@@ -90,6 +96,7 @@ public class ListagemFilme extends javax.swing.JFrame {
         });
 
         btnRegister.setText("Cadastrar");
+        btnRegister.setToolTipText("Cadastrar novo filme.");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegisterActionPerformed(evt);
@@ -153,10 +160,20 @@ public class ListagemFilme extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Abre a janela de cadastro de filmes.
+     * 
+     * @param evt O evento de clique do botão.
+     */
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         new CadastrarFilme(this).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    /**
+     * Carrega o filme selecionado para realizar edição.
+     * 
+     * @param evt O evento de clique do botão.
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             if (tblMovies.getSelectedRowCount() > 1) {
@@ -180,6 +197,11 @@ public class ListagemFilme extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnEditActionPerformed
 
+    /**
+     * Deleta os filmes selecionados na tabela.
+     * 
+     * @param evt O evento de clique do botão.
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (tblMovies.getSelectedRowCount() == 0) {
             JOptionPane.showMessageDialog(null, "Selecione pelo menos um filme.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -206,6 +228,11 @@ public class ListagemFilme extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Atualiza a tabela de filmes com base no filtro pesquisado por nome ou categoria.
+     * 
+     * @param evt O evento de atualização do caret.
+     */
     private void txtSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtSearchCaretUpdate
         String query = txtSearch.getText().trim();
         try {
@@ -219,7 +246,7 @@ public class ListagemFilme extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchCaretUpdate
 
     /**
-     * Atualiza a tabela de filmes com uma baseado na lista filmes.
+     * Atualiza a tabela de filmes com uma lista filmes.
      *
      * @param filmes A lista de filmes a ser exibida na tabela
      */
