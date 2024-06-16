@@ -168,7 +168,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
 
     /**
      * Limpa os campos de texto quando o botão "Limpar" é clicado.
-     * 
+     *
      * @param evt O evento de clique do botão.
      */
     private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
@@ -179,7 +179,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
 
     /**
      * Executa o cadastro de um filme quando o botão "Cadastrar" é clicado.
-     * 
+     *
      * @param evt O evento de clique do botão.
      */
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
@@ -212,6 +212,9 @@ public class CadastrarFilme extends javax.swing.JFrame {
             // Realiza tentativa de inserir o filme no banco de dados.
             FilmeDAO.insertMovie(filme);
             JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + " \" adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            txtName.setText("");
+            txtDate.setText("");
+            txtCategory.setText("");
         } catch (SQLException e) {
             System.out.println("Erro ao adiconar" + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar filme, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
