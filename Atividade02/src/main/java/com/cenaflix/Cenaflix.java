@@ -1,6 +1,6 @@
 package com.cenaflix;
 
-import com.cenaflix.view.CadastrarFilme;
+import com.cenaflix.view.ListagemFilme;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.EventQueue;
 
@@ -10,6 +10,6 @@ import java.awt.EventQueue;
 public class Cenaflix {
     public static void main(String[] args) {
         FlatMacLightLaf.setup();
-        EventQueue.invokeLater(() -> new CadastrarFilme().setVisible(true));
+        EventQueue.invokeLater(() -> new ListagemFilme().setVisible(true));
     }
 }

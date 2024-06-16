@@ -1,7 +1,9 @@
 com\cenaflix\model\Filme.class
+com\cenaflix\view\ListagemFilme.class
 com\cenaflix\Cenaflix.class
 com\cenaflix\view\CadastrarFilme$2.class
 com\cenaflix\dao\FilmeDAO.class
 com\cenaflix\util\DB.class
+com\cenaflix\view\ListagemFilme$1.class
 com\cenaflix\view\CadastrarFilme.class
 com\cenaflix\view\CadastrarFilme$1.class
