@@ -13,9 +13,11 @@ import javax.swing.JOptionPane;
  * Classe responsável pela interface gráfica de cadastro de filmes.
  */
 public class CadastrarFilme extends javax.swing.JDialog {
+    private final ListagemFilme listagemFilme;
 
     public CadastrarFilme(ListagemFilme listagemFilme) {
         super(listagemFilme, "Cadastrar filme", true);
+        this.listagemFilme = listagemFilme;
         initComponents();
         init();
     }
@@ -213,6 +215,7 @@ public class CadastrarFilme extends javax.swing.JDialog {
             // Realiza tentativa de inserir o filme no banco de dados.
             FilmeDAO.insertMovie(filme);
             JOptionPane.showMessageDialog(null, "Filme: \"" + filme.getNome() + " \" adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            listagemFilme.loadMovies();
             txtName.setText("");
             txtDate.setText("");
             txtCategory.setText("");
