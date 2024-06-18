@@ -1,14 +1,19 @@
 package com.cenaflix.view;
 
+import com.cenaflix.model.Usuario;
 import com.formdev.flatlaf.FlatClientProperties;
 
 public class ListagemPodcast extends javax.swing.JFrame {
 
-    public ListagemPodcast() {
+    private Usuario usuarioLogado;
+
+    public ListagemPodcast(Usuario usuario) {
+        this.usuarioLogado = usuario;
         initComponents();
         init();
+        ajustPermission();
     }
-    
+
     private void init() {
         panel.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;"
@@ -27,7 +32,6 @@ public class ListagemPodcast extends javax.swing.JFrame {
         txtSearch = new javax.swing.JTextField();
         lblTitle = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,15 +85,6 @@ public class ListagemPodcast extends javax.swing.JFrame {
             }
         });
 
-        btnEdit.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        btnEdit.setText("Editar");
-        btnEdit.setToolTipText("Editar filme.");
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-
         btnRegister.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         btnRegister.setText("Cadastrar");
         btnRegister.setToolTipText("Cadastrar novo filme.");
@@ -103,18 +98,16 @@ public class ListagemPodcast extends javax.swing.JFrame {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                 .addGap(2, 2, 2)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 407, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(2, 2, 2))
         );
@@ -127,10 +120,9 @@ public class ListagemPodcast extends javax.swing.JFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addGap(5, 5, 5))
         );
 
@@ -163,18 +155,25 @@ public class ListagemPodcast extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-
-    }//GEN-LAST:event_btnEditActionPerformed
-
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         new CadastrarPodcast(this).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    private void ajustPermission() {
+        if ("Administrador".equals(usuarioLogado.getTipo())) {
+            btnRegister.setEnabled(true);
+            btnDelete.setEnabled(true);
+        } else if ("Operador".equals(usuarioLogado.getTipo())) {
+            btnRegister.setEnabled(true);
+            btnDelete.setEnabled(false);
+        } else if ("Usuário".equals(usuarioLogado.getTipo())) {
+            btnRegister.setEnabled(false);
+            btnDelete.setEnabled(false);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnRegister;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitle;

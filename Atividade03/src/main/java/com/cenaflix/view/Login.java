@@ -1,6 +1,10 @@
 package com.cenaflix.view;
 
+import com.cenaflix.dao.UsuarioDAO;
+import com.cenaflix.model.Crypto;
+import com.cenaflix.model.Usuario;
 import com.formdev.flatlaf.FlatClientProperties;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
@@ -13,6 +17,8 @@ public class Login extends javax.swing.JFrame {
         
         panel.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15");
+        txtPassword.putClientProperty(FlatClientProperties.STYLE, ""
+                + "showRevealButton:true");
     }
 
     @SuppressWarnings("unchecked")
@@ -25,8 +31,8 @@ public class Login extends javax.swing.JFrame {
         lblLogin = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
+        txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -35,26 +41,27 @@ public class Login extends javax.swing.JFrame {
         panel.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
 
         lblTitle.setBackground(new java.awt.Color(0, 0, 0));
-        lblTitle.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("Cineflix");
 
-        lblSubTitle.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        lblSubTitle.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         lblSubTitle.setForeground(new java.awt.Color(0, 0, 0));
         lblSubTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSubTitle.setText("Faça login.");
 
         lblLogin.setBackground(new java.awt.Color(0, 0, 0));
-        lblLogin.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lblLogin.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lblLogin.setLabelFor(txtUsername);
         lblLogin.setText("Login:");
 
         lblPassword.setBackground(new java.awt.Color(0, 0, 0));
-        lblPassword.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        lblPassword.setLabelFor(txtPassword);
+        lblPassword.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lblPassword.setText("Senha:");
 
-        btnLogin.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        txtUsername.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+
+        btnLogin.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,28 +69,32 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        txtPassword.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblSubTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(304, 304, 304))
             .addGroup(panelLayout.createSequentialGroup()
                 .addGap(200, 200, 200)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(lblLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(265, 265, 265))
+                        .addGap(465, 465, 465))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(261, 261, 261))
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(200, 200, 200))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(304, 304, 304))
+                        .addGap(461, 461, 461))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,8 +110,8 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(74, Short.MAX_VALUE))
         );
@@ -119,7 +130,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(155, 155, 155)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,8 +138,20 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        new ListagemPodcast().setVisible(true);
-        dispose();
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuario = usuarioDAO.auth(username, Crypto.getMD5(password));
+        
+        if (usuario != null) {
+            JOptionPane.showMessageDialog(null, "Olá " + usuario.getNome() + ", sua permissão é de " + usuario.getTipo() + ". Seja bem-vindo!",
+                    "Login", JOptionPane.INFORMATION_MESSAGE);
+            new ListagemPodcast(usuario).setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos, tente novamente.", "Login", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
 
@@ -139,7 +162,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblSubTitle;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel panel;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
