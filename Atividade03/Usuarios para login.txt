@@ -1,0 +1,3 @@
+Olá, tutor! Tudo bom?
+
+Os usuários utilizados para login nessa atividade são "admin", "operador" e "usuario", todos com a senha "123". Cada um tem permissões diferentes na aplicação, como solicitado na atividade. Desde já agradeço pelo seu tempo e correção!
