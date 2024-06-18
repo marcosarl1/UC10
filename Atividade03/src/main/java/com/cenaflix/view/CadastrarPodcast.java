@@ -265,8 +265,8 @@ public class CadastrarPodcast extends javax.swing.JDialog {
             Podcast podcast = new Podcast(produtor, nomeEpisodio, Integer.parseInt(numeroEpisodio), duracao, url);
             new PodcastDAO().insertPodcast(podcast);
             JOptionPane.showMessageDialog(null, "Podcast cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            listagemPodcast.loadPodcast();
             dispose();
+            listagemPodcast.loadPodcast();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "O número do episódio deve ser um número inteiro.", "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
