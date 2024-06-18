@@ -182,9 +182,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Insira o nome do produtor."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProdutorActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNomeEP">
           <Properties>
@@ -211,9 +208,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Insira o nome do epis&#xf3;dio."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNomeEPActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNumeroEP">
           <Properties>
@@ -276,9 +270,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Insira a dura&#xe7;&#xe3;o do epis&#xf3;dio."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDuracaoActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumeroEP">
           <Properties>
@@ -287,9 +278,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Insira o n&#xfa;mero do epis&#xf3;dio."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumeroEPActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtURL">
           <Properties>
@@ -298,9 +286,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Insira a URL."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtURLActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCadastrar">
           <Properties>
@@ -313,6 +298,9 @@
             <Property name="text" type="java.lang.String" value="Cadastrar"/>
             <Property name="toolTipText" type="java.lang.String" value="Cadastar novo podcast."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnLimpar">
           <Properties>
@@ -325,6 +313,9 @@
             <Property name="text" type="java.lang.String" value="Limpar"/>
             <Property name="toolTipText" type="java.lang.String" value="Limpar todos os campos."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimparActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

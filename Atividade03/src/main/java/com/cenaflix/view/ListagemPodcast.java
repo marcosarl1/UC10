@@ -1,17 +1,25 @@
 package com.cenaflix.view;
 
+import com.cenaflix.dao.PodcastDAO;
+import com.cenaflix.model.Podcast;
 import com.cenaflix.model.Usuario;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ListagemPodcast extends javax.swing.JFrame {
 
     private Usuario usuarioLogado;
+    private final PodcastDAO podcastDAO;
 
     public ListagemPodcast(Usuario usuario) {
         this.usuarioLogado = usuario;
+        this.podcastDAO = new PodcastDAO();
         initComponents();
         init();
         ajustPermission();
+        loadPodcast();
     }
 
     private void init() {
@@ -28,7 +36,7 @@ public class ListagemPodcast extends javax.swing.JFrame {
 
         panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblMovies = new javax.swing.JTable();
+        tblPodcast = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         lblTitle = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
@@ -36,8 +44,8 @@ public class ListagemPodcast extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tblMovies.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        tblMovies.setModel(new javax.swing.table.DefaultTableModel(
+        tblPodcast.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        tblPodcast.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -53,15 +61,15 @@ public class ListagemPodcast extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblMovies.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tblMovies);
-        if (tblMovies.getColumnModel().getColumnCount() > 0) {
-            tblMovies.getColumnModel().getColumn(0).setMinWidth(70);
-            tblMovies.getColumnModel().getColumn(0).setMaxWidth(70);
-            tblMovies.getColumnModel().getColumn(3).setMinWidth(110);
-            tblMovies.getColumnModel().getColumn(3).setMaxWidth(110);
-            tblMovies.getColumnModel().getColumn(4).setMinWidth(110);
-            tblMovies.getColumnModel().getColumn(4).setMaxWidth(110);
+        tblPodcast.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tblPodcast);
+        if (tblPodcast.getColumnModel().getColumnCount() > 0) {
+            tblPodcast.getColumnModel().getColumn(0).setMinWidth(70);
+            tblPodcast.getColumnModel().getColumn(0).setMaxWidth(70);
+            tblPodcast.getColumnModel().getColumn(3).setMinWidth(110);
+            tblPodcast.getColumnModel().getColumn(3).setMaxWidth(110);
+            tblPodcast.getColumnModel().getColumn(4).setMinWidth(110);
+            tblPodcast.getColumnModel().getColumn(4).setMaxWidth(110);
         }
 
         txtSearch.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -148,7 +156,11 @@ public class ListagemPodcast extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtSearchCaretUpdate
-
+        try {
+            List<Podcast> podcasts = podcastDAO.getPodcast(txtSearch.getText().trim());
+            updateTbl(podcasts);
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_txtSearchCaretUpdate
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -158,6 +170,23 @@ public class ListagemPodcast extends javax.swing.JFrame {
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         new CadastrarPodcast(this).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void updateTbl(List<Podcast> podcasts) {
+        DefaultTableModel tblModel = (DefaultTableModel) tblPodcast.getModel();
+        tblModel.setRowCount(0);
+        for (Podcast podcast : podcasts) {
+            tblModel.addRow(new Object[]{podcast.getId(), podcast.getProdutor(), podcast.getNomeEpisodio(), podcast.getNumeroEpisodio(), podcast.getDuracao(), podcast.getUrl()});
+        }
+    }
+
+    protected void loadPodcast() {
+        try {
+            List<Podcast> podcasts = podcastDAO.getPodcast("");
+            updateTbl(podcasts);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar podcasts, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void ajustPermission() {
         if ("Administrador".equals(usuarioLogado.getTipo())) {
@@ -178,7 +207,7 @@ public class ListagemPodcast extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel panel;
-    private javax.swing.JTable tblMovies;
+    private javax.swing.JTable tblPodcast;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

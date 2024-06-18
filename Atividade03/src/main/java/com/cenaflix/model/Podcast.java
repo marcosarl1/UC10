@@ -1,5 +1,6 @@
 package com.cenaflix.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,13 +13,26 @@ public class Podcast {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String produtor;
+    
+    @Column(name = "nome_episodio")
     private String nomeEpisodio;
+    
+    @Column(name = "numero_episodio")
     private int numeroEpisodio;
+    
     private String duracao;
     private String url;
 
     public Podcast(int id, String produtor, String nomeEpisodio, int numeroEpisodio, String duracao, String url) {
         this.id = id;
+        this.produtor = produtor;
+        this.nomeEpisodio = nomeEpisodio;
+        this.numeroEpisodio = numeroEpisodio;
+        this.duracao = duracao;
+        this.url = url;
+    }
+
+    public Podcast(String produtor, String nomeEpisodio, int numeroEpisodio, String duracao, String url) {
         this.produtor = produtor;
         this.nomeEpisodio = nomeEpisodio;
         this.numeroEpisodio = numeroEpisodio;

@@ -1,11 +1,16 @@
 package com.cenaflix.view;
 
+import com.cenaflix.dao.PodcastDAO;
+import com.cenaflix.model.Podcast;
 import com.formdev.flatlaf.FlatClientProperties;
 
 public class CadastrarPodcast extends javax.swing.JDialog {
+    
+    private final ListagemPodcast listagemPodcast;
 
     public CadastrarPodcast(ListagemPodcast listagemPodcast) {
         super(listagemPodcast, "Cadastrar Podcast", true);
+        this.listagemPodcast = listagemPodcast;
         initComponents();
         init();
     }
@@ -60,11 +65,6 @@ public class CadastrarPodcast extends javax.swing.JDialog {
 
         txtProdutor.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtProdutor.setToolTipText("Insira o nome do produtor.");
-        txtProdutor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtProdutorActionPerformed(evt);
-            }
-        });
 
         lblNomeEP.setBackground(new java.awt.Color(0, 0, 0));
         lblNomeEP.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -75,11 +75,6 @@ public class CadastrarPodcast extends javax.swing.JDialog {
 
         txtNomeEP.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtNomeEP.setToolTipText("Insira o nome do episódio.");
-        txtNomeEP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeEPActionPerformed(evt);
-            }
-        });
 
         lblNumeroEP.setBackground(new java.awt.Color(0, 0, 0));
         lblNumeroEP.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -104,37 +99,32 @@ public class CadastrarPodcast extends javax.swing.JDialog {
 
         txtDuracao.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtDuracao.setToolTipText("Insira a duração do episódio.");
-        txtDuracao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDuracaoActionPerformed(evt);
-            }
-        });
 
         txtNumeroEP.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtNumeroEP.setToolTipText("Insira o número do episódio.");
-        txtNumeroEP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNumeroEPActionPerformed(evt);
-            }
-        });
 
         txtURL.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtURL.setToolTipText("Insira a URL.");
-        txtURL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtURLActionPerformed(evt);
-            }
-        });
 
         btnCadastrar.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         btnCadastrar.setForeground(new java.awt.Color(0, 0, 0));
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.setToolTipText("Cadastar novo podcast.");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         btnLimpar.setForeground(new java.awt.Color(0, 0, 0));
         btnLimpar.setText("Limpar");
         btnLimpar.setToolTipText("Limpar todos os campos.");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -221,25 +211,24 @@ public class CadastrarPodcast extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtProdutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProdutorActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtProdutorActionPerformed
+    }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void txtNomeEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeEPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeEPActionPerformed
-
-    private void txtDuracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDuracaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDuracaoActionPerformed
-
-    private void txtNumeroEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroEPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumeroEPActionPerformed
-
-    private void txtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtURLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtURLActionPerformed
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        String produtor = txtProdutor.getText().trim();
+        String nomeEpisodio = txtNomeEP.getText().trim();
+        String numeroEpisodio = txtNumeroEP.getText().trim();
+        String duracao = txtDuracao.getText().trim();
+        String url = txtURL.getText().trim();
+        
+        try {
+            Podcast podcast = new Podcast(produtor, nomeEpisodio, Integer.parseInt(numeroEpisodio), duracao, url);
+            new PodcastDAO().insertPodcast(podcast);
+            listagemPodcast.loadPodcast();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
 
 
