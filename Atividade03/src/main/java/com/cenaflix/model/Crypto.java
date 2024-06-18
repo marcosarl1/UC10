@@ -4,8 +4,18 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Classe utilitária para operações de criptografia.
+ * 
+ */
 public class Crypto {
 
+    /**
+     * Calcula o hash MD5 de uma string.
+     * 
+     * @param txt A string para a qual o hash MD5 será calculado.
+     * @return O hash MD5 como uma string hexadecimal de 32 caracteres.
+     */
     public static String getMD5(String txt) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

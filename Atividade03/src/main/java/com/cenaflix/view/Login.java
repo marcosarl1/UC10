@@ -6,6 +6,10 @@ import com.cenaflix.model.Usuario;
 import com.formdev.flatlaf.FlatClientProperties;
 import javax.swing.JOptionPane;
 
+/**
+ * JFrame para autenticação de usuários no sistema.
+ * 
+ */
 public class Login extends javax.swing.JFrame {
 
     public Login() {
@@ -43,7 +47,7 @@ public class Login extends javax.swing.JFrame {
         lblTitle.setBackground(new java.awt.Color(0, 0, 0));
         lblTitle.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("Cineflix");
+        lblTitle.setText("Cenaflix");
 
         lblSubTitle.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         lblSubTitle.setForeground(new java.awt.Color(0, 0, 0));
@@ -137,6 +141,11 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Autentica o usuário baseado no username e password passados.
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());

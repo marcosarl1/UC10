@@ -3,9 +3,14 @@ package com.cenaflix.view;
 import com.cenaflix.dao.PodcastDAO;
 import com.cenaflix.model.Podcast;
 import com.formdev.flatlaf.FlatClientProperties;
+import javax.swing.JOptionPane;
 
+/**
+ * JDialog para cadastrar um novo podcast.
+ * 
+ */
 public class CadastrarPodcast extends javax.swing.JDialog {
-    
+
     private final ListagemPodcast listagemPodcast;
 
     public CadastrarPodcast(ListagemPodcast listagemPodcast) {
@@ -15,11 +20,21 @@ public class CadastrarPodcast extends javax.swing.JDialog {
         init();
     }
 
-    private void init(){
+    private void init() {
         panel.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15");
+        txtProdutor.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, ""
+                + "Insira o produtor");
+        txtNomeEP.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, ""
+                + "Insira o nome do episódio");
+        txtNumeroEP.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, ""
+                + "Insira o número do episódio");
+        txtDuracao.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, ""
+                + "Duração (hh:mm:ss ou mm:ss)");
+        txtURL.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, ""
+                + "Insira a URL do repositório");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,26 +226,63 @@ public class CadastrarPodcast extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Limpa todos os campos de entrada de texto.
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        txtProdutor.setText("");
+        txtNomeEP.setText("");
+        txtNumeroEP.setText("");
+        txtDuracao.setText("");
+        txtURL.setText("");
     }//GEN-LAST:event_btnLimparActionPerformed
 
+    /**
+     * Ação executada ao clicar no botão "Cadastrar".
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        if (!validarDuracao()) {
+            JOptionPane.showMessageDialog(null, "Duração deve estar no formato hh:mm:ss ou mm:ss", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         String produtor = txtProdutor.getText().trim();
         String nomeEpisodio = txtNomeEP.getText().trim();
         String numeroEpisodio = txtNumeroEP.getText().trim();
         String duracao = txtDuracao.getText().trim();
         String url = txtURL.getText().trim();
-        
+
+        if (produtor.isEmpty() || nomeEpisodio.isEmpty() || numeroEpisodio.isEmpty() || duracao.isEmpty() || url.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
             Podcast podcast = new Podcast(produtor, nomeEpisodio, Integer.parseInt(numeroEpisodio), duracao, url);
             new PodcastDAO().insertPodcast(podcast);
+            JOptionPane.showMessageDialog(null, "Podcast cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             listagemPodcast.loadPodcast();
+            dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "O número do episódio deve ser um número inteiro.", "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar Podcast, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
-
+    /**
+     * Valida o formato da duração do episódio.
+     * 
+     * @return true se a duração estiver no formato válido (hh:mm:ss ou mm:ss), caso contrário, false.
+     */
+    private boolean validarDuracao() {
+        String duracao = txtDuracao.getText().trim();
+        return duracao.matches("^(([0-1]?\\d|2[0-3]):[0-5]\\d:[0-5]\\d)|([0-5]?\\d:[0-5]\\d)$");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;

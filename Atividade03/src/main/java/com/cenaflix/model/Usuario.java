@@ -5,6 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * Representa uma entidade Usuario.
+ * 
+ */
 @Entity
 public class Usuario {
     

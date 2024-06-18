@@ -8,9 +8,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * JFrame para listar e gerenciar podcasts.
+ *
+ */
 public class ListagemPodcast extends javax.swing.JFrame {
 
-    private Usuario usuarioLogado;
+    private final Usuario usuarioLogado;
     private final PodcastDAO podcastDAO;
 
     public ListagemPodcast(Usuario usuario) {
@@ -18,7 +22,7 @@ public class ListagemPodcast extends javax.swing.JFrame {
         this.podcastDAO = new PodcastDAO();
         initComponents();
         init();
-        ajustPermission();
+        adjustPermission();
         loadPodcast();
     }
 
@@ -155,6 +159,11 @@ public class ListagemPodcast extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Atualiza a tabela de podcasts com base na pesquisa.
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void txtSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtSearchCaretUpdate
         try {
             List<Podcast> podcasts = podcastDAO.getPodcast(txtSearch.getText().trim());
@@ -163,23 +172,64 @@ public class ListagemPodcast extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtSearchCaretUpdate
 
+    /**
+     * Apaga o podcast do banco de dados com base nas linhas selecionadas. 
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (tblPodcast.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione pelo menos um podcast.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
+        int[] selectedRows = tblPodcast.getSelectedRows();
+        String[] options = {"Sim", "Não"};
+        int confirm = JOptionPane.showOptionDialog(null, "Tem certeza que deseja deletar o(s) filme(s)?", "Confirmar",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (confirm == 0) {
+            try {
+                for (int selectedRow : selectedRows) {
+                    int id = (int) tblPodcast.getValueAt(selectedRow, 0);
+                    podcastDAO.deletePodcast(id);
+                }
+                loadPodcast();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao deletar Podcast, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Abre JDialog CadastrarPodcast para cadastrar novo podcast.
+     * 
+     * @param evt Evento de clique do botão.
+     */
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         new CadastrarPodcast(this).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    
+    /**
+     * Atualiza a tabela com base numa lista de podcasts.
+     * 
+     * @param podcasts Lista de podcasts a ser inserida na tabela.
+     */
     private void updateTbl(List<Podcast> podcasts) {
         DefaultTableModel tblModel = (DefaultTableModel) tblPodcast.getModel();
         tblModel.setRowCount(0);
         for (Podcast podcast : podcasts) {
-            tblModel.addRow(new Object[]{podcast.getId(), podcast.getProdutor(), podcast.getNomeEpisodio(), podcast.getNumeroEpisodio(), podcast.getDuracao(), podcast.getUrl()});
+            tblModel.addRow(new Object[]{
+                podcast.getId(), podcast.getProdutor(), podcast.getNomeEpisodio(), podcast.getNumeroEpisodio(), podcast.getDuracao(), podcast.getUrl()
+            });
         }
     }
 
-    protected void loadPodcast() {
+    /**
+     * Carrega a lista de Podcast do banco de dados.
+     * 
+     */
+    protected final void loadPodcast() {
         try {
             List<Podcast> podcasts = podcastDAO.getPodcast("");
             updateTbl(podcasts);
@@ -188,16 +238,25 @@ public class ListagemPodcast extends javax.swing.JFrame {
         }
     }
 
-    private void ajustPermission() {
-        if ("Administrador".equals(usuarioLogado.getTipo())) {
-            btnRegister.setEnabled(true);
-            btnDelete.setEnabled(true);
-        } else if ("Operador".equals(usuarioLogado.getTipo())) {
-            btnRegister.setEnabled(true);
-            btnDelete.setEnabled(false);
-        } else if ("Usuário".equals(usuarioLogado.getTipo())) {
-            btnRegister.setEnabled(false);
-            btnDelete.setEnabled(false);
+    /**
+     * Ajusta as permissões com base no tipo de usuário logado.
+     */
+    private void adjustPermission() {
+        if (null != usuarioLogado.getTipo()) {
+            switch (usuarioLogado.getTipo()) {
+                case "Administrador" -> {
+                    btnRegister.setEnabled(true);
+                    btnDelete.setEnabled(true);
+                }
+                case "Operador" -> {
+                    btnRegister.setEnabled(true);
+                    btnDelete.setEnabled(false);
+                }
+                case "Usuário" -> {
+                    btnRegister.setEnabled(false);
+                    btnDelete.setEnabled(false);
+                }
+            }
         }
     }
 
